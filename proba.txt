@@ -1,0 +1,61 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+from datetime import datetime
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+
+# Configuración de la página
+
+date = datetime.today().date()
+page_title = "Repetición Máxima"
+page_icon = "🏋"
+layout = "centered"
+st.set_page_config(page_title=page_title, page_icon=page_icon, layout=layout)
+
+st.title(page_title+" "+page_icon)
+st.text("Elige tu ejercicio, introduce el peso que levantas y cuántas repeticiones máximas\nhaces y obtén el resultado de tu 1RM.")
+
+st.markdown("---")
+
+container = st.container(border=True)
+with container:
+    # Formulario de entrada
+    tab1, tab2 = st.tabs(["Calculo", "Grafico"])
+    with tab1:
+        with st.form("entry_form", clear_on_submit=True):
+            st.subheader("Ingrese sus datos")
+            ejercicio = st.selectbox(
+            "Ejercicio",
+            ("Press Banca", "Press Militar", "Dominadas", "Sentadilla", "Peso Muerto"),
+            index=None,
+            placeholder="Seleccione el ejercicio...",
+        )
+            peso = st.number_input('Peso en KG', value=0, placeholder="Type a number...")
+            repes = st.number_input('Repeticiones', value=0, placeholder="Type a number...")
+            submitted = st.form_submit_button("Guardar")
+        # Calcular 1RM
+            if ejercicio is not None and peso > 0 and repes > 0:
+                st.text(f"Su 1RM en {ejercicio} es de {rm}KG")
+            else:
+                st.text("Por favor complete los campos requeridos.")
+
+    with tab2:
+        chart_data = pd.DataFrame({
+        "Numero": np.random.randn(20),
+        "RM": rm,
+        "Ejercicios": ejercicio})
+        st.line_chart(chart_data, x="Numero", y="RM", color="Ejercicios")
+
+
+st.markdown("---")
+
+contenido_markdown = '''
+<div style="display: flex; justify-content: center; align-items: center;">
+    <a href='https://cafecito.app/tmalafiej' rel='noopener' target='_blank'><img srcset='https://cdn.cafecito.app/imgs/buttons/button_4.png 1x,
+    https://cdn.cafecito.app/imgs/buttons/button_4_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_4_3.75x.png 3.75x'
+    src='https://cdn.cafecito.app/imgs/buttons/button_4.png' alt='Invitame un café en cafecito.app' />
+    </a>
+</div> 
+'''
+st.markdown(contenido_markdown, unsafe_allow_html=True)
